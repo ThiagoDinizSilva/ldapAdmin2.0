@@ -1,0 +1,181 @@
+.usuarios {
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+.box {
+    height: 75vh;
+    width: 80vw;
+    position: absolute;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em 2em 2em 2em;
+    left: 0;
+    right: 0;
+    top: 4em;
+    background-color: #fff;
+
+}
+
+.formulario {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: right;
+    width: 80vw;
+    height: 210px;
+    background-color: #fff;
+    overflow: hidden;
+    transition: height 0.5s ease-in;
+
+    &.aberto {
+        height: 300px;
+    }
+
+    & button {
+        display: none;
+    }
+
+    &.opcoes {
+        display: flex;
+        flex-direction: row;
+        align-content: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        height: fit-content;
+    }
+}
+
+.fade {
+    display: flex;
+    position: sticky;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1em 0em 1em;
+    left: 0;
+    right: 0;
+    margin-top: 0.5em;
+    height: 45px;
+    width: 100%;
+    background: #fff;
+
+    & svg {
+        font-size: 1.5em;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+
+    & .cadastrar {
+        outline: none;
+        border: none;
+        background-color: #073775;
+        justify-self: flex-end;
+        font-weight: bold;
+        margin-right: 10px;
+        border-radius: 30px;
+        padding: 0.6em;
+        color: #fff;
+        height: 40px;
+        transition: all 0.4s;
+
+        &:hover {
+            background-color: #19355c;
+
+        }
+    }
+
+    & .buscar {
+        outline: none;
+        border: none;
+        background-color: #92bffa;
+        font-weight: bold;
+        border-radius: 30px;
+        padding: 1em;
+        color: #fff;
+        height: 40px;
+        transition: all 0.4s;
+
+        &:hover {
+            background-color: #19355c;
+
+        }
+    }
+}
+
+.resultados {
+    overflow: auto;
+    margin-top: 3em;
+    text-align: center;
+    width: 100%;
+    height: 43%;
+    list-style: none;
+    font-size: 15px;
+
+    & li {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+        border-bottom: 2px solid #b6bdc1;
+        width: 95%;
+        margin: 0 auto;
+        height: 36px;
+    }
+
+    & .index-label p {
+        color: rgb(83, 83, 83);
+        font-weight: bold;
+
+        &:not(:last-child) {
+            width: 40%;
+        }
+    }
+
+    & .index-item p {
+        width: 40%;
+    }
+
+    .index-icon-div {
+        display: flex;
+        align-content: flex-end;
+        margin-left: auto;
+
+        & button {
+            display: flex;
+            align-items: center;
+            margin-left: 4px;
+            outline: none;
+            border: none;
+            background-color: #fff;
+            width: 30px;
+        }
+
+        & svg {
+            font-size: 21px;
+            pointer-events: none;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 14px;
+    }
+
+    &::-webkit-scrollbar-track {}
+
+    &::-webkit-scrollbar-thumb {
+        background: #92bffa;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #6da2e9;
+    }
+}

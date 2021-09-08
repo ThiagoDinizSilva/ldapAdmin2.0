@@ -1,0 +1,16 @@
+.card-icon {
+    font-size: 7em;
+    flex-grow: 2;
+    pointer-events: none;
+}
+.card-text {
+    width: 90px;
+    font-size: 22px;
+    pointer-events: none;
+}
+
+.card-list{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
