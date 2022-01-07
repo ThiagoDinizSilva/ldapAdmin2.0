@@ -9,9 +9,9 @@ const userRoute = require("./routes/user");
 //Rota para Autenticação
 app.use("/auth", authRoute);
 //Rota de Usuarios
-app.use("/usuarios", isAdmin, userRoute);
+app.use("/usuarios", userRoute);
 //Rota de Permissoes
-app.use("/permissoes", isAdmin, groupRoute);
+app.use("/permissoes", groupRoute);
 
 //Manipula os Erros
 // eslint-disable-next-line no-unused-vars
@@ -48,9 +48,9 @@ app.use((err, req, res, next) => {
 		});
 	}
 	if (err.message.includes("0x44")) {
-		return res.status(304).send({
+		return res.status(400).send({
 			status: false,
-			data: { err: "Registro ja existe no Ldap" }
+			data: { err: "Registro ja existe" }
 		});
 	}
 
@@ -82,4 +82,4 @@ app.use((err, req, res, next) => {
 		});
 });
 
-app.listen(process.env.API_PORT || '3000', () => console.log(`API LISTENING IN ${process.env.API_PORT || '3000'}`));
+app.listen(process.env.API_PORT || '3001', () => console.log(`API LISTENING IN ${process.env.API_PORT || '3001'}`));

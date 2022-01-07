@@ -33,6 +33,7 @@ function Login() {
                     }
                 });
         } catch (err) {
+            setStatus({ ...status, loading: false })
             alert(err.message);
         }
     };

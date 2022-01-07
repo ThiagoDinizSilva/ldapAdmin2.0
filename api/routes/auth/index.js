@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { listarPermissoes } = require("../../helpers/Permissoes");
 const authRoute = express();
 const Usuario = require("../../helpers/Usuario");
 
@@ -35,7 +34,8 @@ async function isAdmin(req, res, next) {
 		const bearerToken = bearer[1];
 		req.token = jwt.verify(bearerToken, process.env.SECRET || 'secret');
 		const { login } = req.token;
-		const permissoes = (await listarPermissoes({ uid: login })).data;
+		const usuario = new Usuario({ login })
+		const permissoes = await usuario.listarPermissoes().data;
 
 		if (!permissoes.includes("admin")) throw new Error("unauthorized");
 

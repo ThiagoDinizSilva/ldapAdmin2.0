@@ -1,15 +1,13 @@
 const express = require("express");
-const { listarPermissoes } = require("../../helpers/Permissoes");
 const userRoute = express();
 const Usuario = require("../../helpers/Usuario");
-const { adicionarPermissoes, removerPermissoes } = require("../../helpers/Permissoes");
 
 //Traz a lista de Usuarios ou pesquisa usuarios através de query parameters login='Usuario'
 userRoute.get("/", async (req, res, next) => {
 	try {
 		const login = req.query.login;
 		const usuario = new Usuario({ login });
-		const listaDeUsuarios = await usuario.pesquisar();
+		const listaDeUsuarios = await usuario.listarUsuarios();
 		res.status(200).send({
 			status: true,
 			data: { usuarios: listaDeUsuarios.data }
@@ -23,10 +21,9 @@ userRoute.get("/", async (req, res, next) => {
 //Traz as informações completas sobre um usuário
 userRoute.get("/:id", async (req, res, next) => {
 	try {
-		const login = req.params.id;
-		const usuario = new Usuario({ login });
-		const { data } = await usuario.buscarInfo();
-		data[0].permissoes = (await listarPermissoes({ uid: login })).data;
+		const usuario = new Usuario({ login: req.params.id });
+		const { data } = await usuario.buscarUsuario();
+		data[0].permissoes = await usuario.listarPermissoes();
 		return res.status(200).send({
 			status: true,
 			data
@@ -103,14 +100,11 @@ userRoute.put("/:id", async (req, res, next) => {
 });
 
 //deleta um usuario
-userRoute.delete("/:id", async (req, res, next) => {
+userRoute.delete("/", async (req, res, next) => {
 	try {
-		const login = req.params.id;
-		const usuario = new Usuario({ login });
-		const deletado = await usuario.deletar();
-		if (!deletado.status)
-			return res.status(304).send();
-		return res.status(200).send(deletado);
+		const usuario = new Usuario({ nome: req.body.nome });
+		await usuario.deletar();
+		return res.status(200).send();
 
 	} catch (err) {
 		next(err);

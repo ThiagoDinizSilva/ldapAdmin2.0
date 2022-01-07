@@ -2,16 +2,10 @@
 /* eslint-disable no-unreachable */
 const { Client, Change, Attribute } = require("ldapts");
 const CryptoJS = require("crypto-js");
+const Ldap = require("./Ldap");
 
-const url = process.env.LDAP_URL || 'ldap://10.1.113.248:389';
-const usuario = process.env.LDAP_USUARIO || 'cn=manager,dc=esao,dc=eb,dc=mil,dc=br';
-const senha = process.env.LDAP_ADMIN_PASSWORD || 's3cr3t3sao';
-const baseUsuarios = process.env.LDAP_BASEDN_USUARIOS || 'ou=people,dc=esao,dc=eb,dc=mil,dc=br';
-const baseGrupos = process.env.LDAP_BASEDN_GRUPOS || 'ou=people,dc=esao,dc=eb,dc=mil,dc=br';
+const client = new Ldap();
 
-const client = new Client({
-	url: url,
-});
 class Usuario {
 	constructor({ login, nome, sobrenome, nomeExibicao, grupo, password }) {
 		this.uid = login;
@@ -44,76 +38,43 @@ class Usuario {
 
 	}
 
-	async buscarInfo() {
+	async buscarUsuario() {
+		const atributos = ["initials","sn","displayName","uid","cn"]
+
 		const filtro = `(&${this.uid ? `(uid=${this.uid}*)` : "(uid=*)"}${this.givenName ? `(givenName=*${this.givenName}*)` : ""}${this.sn ? `(sn=*${this.sn}*)` : ""}${this.displayName ? `(displayName=*${this.displayName}*)` : ""})`;
-		await client.bind(usuario, senha);
-		const {
-			searchEntries
-		} = await client.search(baseUsuarios, {
-			scope: "sub",
-			filter: filtro,
-			attributes: ["displayName", "uid", "givenName", "sn"]
-		});
-		await client.unbind();
-		return ({ status: true, data: searchEntries });
+		const usuario = await client.buscar(filtro,atributos)
+		if (!usuario) {
+			return usuario;
+		}
+
+		return ({ status: true, data: usuario });
 
 	}
-	async pesquisar() {
+	async listarUsuarios() {
 		const filtro = `(&${this.uid ? `(uid=${this.uid}*)` : "(uid=*)"}${this.displayName ? `(displayName=*${this.displayName}*)` : ""})`;
-		await client.bind(usuario, senha);
-		const {
-			searchEntries
-		} = await client.search(baseUsuarios, {
-			scope: "sub",
-			filter: filtro,
-			attributes: ["displayName", "uid"]
-		});
-		for (const key in searchEntries) {
-			delete searchEntries[key]["dn"];
-		}
-		await client.unbind();
-		return ({ status: true, data: searchEntries });
+		const atributos = ["initials","sn","displayName","uid","cn"]
 
+		const usuario = await client.buscar(filtro,atributos)
+		if (!usuario) {
+			return usuario;
+		}
+
+		return ({ status: true, data: usuario });
+	}
+
+	async listarPermissoes(){
+		return await client.buscarGruposContendoUsuario(this.uid);
 	}
 
 	async deletar() {
-		const usuarioDeletado = await this.buscarInfo();
-		if (usuarioDeletado.data.length <= 0)
-			throw new TypeError("dn Inexistente");
-		const { dn } = usuarioDeletado.data[0];
-
-		await client.bind(usuario, senha);
-		if (dn.includes(this.uid)) {
-			await client.del(dn);
-		}
-		await client.unbind();
-		return ({ status: true, data: "deletado" });
+		await client.deletar(this.uid,"posixAccount");
+		return ({ status: true, data: "" });
 	}
 
 	async adicionar() {
-		const pass = CryptoJS.MD5(this.uid);
 		this.validar();
-		const userDN = `uid=${this.uid},${baseUsuarios}`;
-		const uidNumber = (Math.floor(Math.random() * 65534) + 1000).toString();
-		const gidNumber = (Math.floor(Math.random() * 65534) + 1000).toString();
-
-		const entry = {
-			objectClass: ["posixAccount", "top", "inetOrgPerson"],
-			givenName: this.givenName,
-			sn: this.sn,
-			displayName: this.displayName,
-			userPassword: `{MD5}${CryptoJS.enc.Base64.stringify(pass)}`,
-			cn: this.uid,
-			homeDirectory: "/home/null",
-			loginShell: "/bin/false",
-			uidNumber: uidNumber,
-			gidNumber: gidNumber
-		};
-
-		await client.bind(usuario, senha);
-		await client.add(userDN, entry);
-		await client.unbind();
-		return ({ status: true, data: "adicionado" });
+		const usuarioAdicionado = await client.adicionarUsuario(this);
+		return ({ status: true, data: usuarioAdicionado });
 	}
 
 	async atualizar() {
