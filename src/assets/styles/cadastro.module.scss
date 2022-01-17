@@ -1,0 +1,28 @@
+.formularioCadastro{
+    display: flex;
+    flex-direction: column;
+    >div{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        >div{
+            margin: 1rem;
+        }
+    }
+}
+
+.full{
+    width: 100%;
+}
+.half{
+    width: 40%;
+}
+
+.selectForm{
+    width: 30%;
+}
+
+.hiddenForm{
+    width: 100%;
+    height: fit-content;
+}
