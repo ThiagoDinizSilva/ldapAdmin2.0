@@ -10,7 +10,6 @@ function Login() {
     const [password, setPassword] = useState("");
     const [status, setStatus] = useState({ loading: false, error: "" });
     const context = useAuth();
-
     const handleSignIn = async e => {
         try {
             e.preventDefault();
@@ -24,7 +23,7 @@ function Login() {
         } catch (err) {
             setStatus({ ...status, loading: false })
             console.log(err)
-            alert(err.message);
+            alert('11' + err.message);
         }
     };
     return (
@@ -39,7 +38,6 @@ function Login() {
                 className={styled.loginForm}
                 onSubmit={handleSignIn}>
                 <div>
-
                     <Input
                         onChange={(event) => setUser(event.target.value)}
                         valoe={user}

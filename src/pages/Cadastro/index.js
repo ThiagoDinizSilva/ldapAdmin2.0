@@ -99,8 +99,8 @@ export default function Cadastro() {
                     </FormControl>
                 </div>
                 <div className={styled.hiddenForm}>
-                    {state.id == 'alunos' ? { alunos } : null}
-                    {state.id == 'esao' ? { esao } : null}
+                    {state.id == 'alunos' ? <div>{alunos}</div> : null}
+                    {state.id == 'esao' ? <div>{esao}</div> : null}
                 </div>
             </form>
         </div>

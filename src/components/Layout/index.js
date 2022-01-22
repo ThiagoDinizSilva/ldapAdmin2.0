@@ -42,19 +42,19 @@ export default function Layout({ children }) {
                                 onKeyDown={toggleDrawer(anchor, false)}
                             >
                                 <List>
-                                    <ListItem button key={'text'} onClick={() => navigate('/')}>
+                                    <ListItem button key={'item1'} onClick={() => navigate('/')}>
                                         <ListItemIcon>
                                             <Home />
                                         </ListItemIcon>
                                         <ListItemText primary={'Home'} />
                                     </ListItem>
-                                    <ListItem button key={'text'} onClick={() => navigate('/cadastro')}>
+                                    <ListItem button key={'item2'} onClick={() => navigate('/cadastro')}>
                                         <ListItemIcon>
                                             <PersonAdd />
                                         </ListItemIcon>
                                         <ListItemText primary={'Cadastro'} />
                                     </ListItem>
-                                    <ListItem button key={'text'} onClick={() => navigate('/permissoes')}>
+                                    <ListItem button key={'item3'} onClick={() => navigate('/permissoes')}>
                                         <ListItemIcon>
                                             <VerifiedUser />
                                         </ListItemIcon>
