@@ -1,13 +1,16 @@
-import { IsArray, isArray, IsNotEmpty, isNotEmpty } from 'class-validator';
+import { Allow, IsArray, IsNotEmpty, Length, ValidateIf } from 'class-validator';
 import { Usuario } from '../usuario/usuario.entity';
 
 export class Grupo {
 
+    @ValidateIf(x => x.nome)
     @IsNotEmpty()
-    private nome: string;
+    nome: string;
+    @Allow()
+    novoNome: string;
 
-    private membros: Array<Usuario> = [];
+    @ValidateIf(x => x.usuarios.length >= 0)
     @IsArray()
-    private objectClass: Array<String>;
+    usuarios: Array<string>;
 
 }

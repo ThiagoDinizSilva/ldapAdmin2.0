@@ -1,7 +1,7 @@
 import { IsArray, IsEmail, IsNotEmpty, IsNumberString } from 'class-validator';
+import { gerarHash } from 'src/common/auth';
 
 export class Usuario {
-    [x: string]: any;
 
     @IsEmail()
     email: string;
@@ -9,12 +9,15 @@ export class Usuario {
     @IsNumberString()
     identidade: string;
     @IsNotEmpty()
-    senha: string;
+    private senha: string;
     @IsNotEmpty()
     nome: string;
     @IsNotEmpty()
     sobrenome: string;
-    @IsArray()
-    grupo: Array<string | Usuario>;
 
+    getSenha() {
+        if (this.senha)
+            return gerarHash(this.senha);
+        return undefined;
+    }
 }
