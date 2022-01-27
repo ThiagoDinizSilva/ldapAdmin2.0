@@ -3,7 +3,7 @@ import { GrupoService } from "./grupo.service";
 import { Grupo } from "./grupo.entity";
 
 
-@Controller("grupo")
+@Controller("grupos")
 export class GrupoController {
     constructor(private grupoService: GrupoService) { }
 
@@ -17,15 +17,11 @@ export class GrupoController {
     async detalharUsuarios(@Param('id') id: string) {
         const grupos = await this.grupoService.detalharGrupo(id)
         if (grupos.length >= 1) return grupos
-        throw new HttpException('Grupo não encontrado', HttpStatus.NOT_FOUND)
     }
 
     @Post()
     @HttpCode(201)
     async cria(@Body() grupo: Grupo): Promise<Grupo> {
-        const grupoExiste = await this.grupoService.detalharGrupo(grupo.nome)
-        if (grupoExiste[0])
-            throw new HttpException('Ja existe um grupo com este nome', HttpStatus.BAD_REQUEST)
         return this.grupoService.adicionar(grupo);
     }
 
@@ -35,13 +31,16 @@ export class GrupoController {
         const grupoExiste = await this.grupoService.detalharGrupo(grupo.nome)
         if (!grupoExiste[0])
             throw new HttpException('Não é possível atualizar um usuário que não foi cadastrado', HttpStatus.BAD_REQUEST)
-        await this.grupoService.validarUsuarios(grupo.usuarios)
+        if (grupo.usuarios)
+            await this.grupoService.validarUsuarios(grupo.usuarios)
         return this.grupoService.atualizar(grupo);
     }
 
     @Delete(":id")
     async deletar(@Param('id') id: string) {
         const grupoExiste = await this.grupoService.detalharGrupo(id)
+        if (id.includes('admin'))
+            throw new HttpException('O grupo Admin não pode ser excluido', HttpStatus.BAD_REQUEST)
         if (!grupoExiste[0])
             throw new HttpException('Não é possível deletar um grupo que não foi cadastrado', HttpStatus.BAD_REQUEST)
         await this.grupoService.deletar(id);

@@ -17,16 +17,25 @@ export class GrupoService {
     * @returns {Array<Object>} retorna uma lista de grupos cuja id começa com 123
     **/
     async listarGrupos(id?: string): Promise<Grupo[]> {
-        if (id) return await this.ldap.find(`(&(cn=${id}*)(objectClass=posixGroup))`, ["cn"])
+        if (id) return await this.ldap.find(`(&(cn=*${id}*)(objectClass=posixGroup))`, ["cn"])
         this.grupos = await this.ldap.find('(&(cn=*)(objectClass=posixGroup))', ["cn"])
         return this.grupos
     }
 
     async detalharGrupo(id: string) {
-        return await this.ldap.find(`(&(cn=${id})(objectClass=posixGroup))`, ["memberUid", "cn"])
+        const grupos = await this.ldap.find(`(&(cn=${id})(objectClass=posixGroup))`, ["memberUid", "cn"])
+        if (grupos.length <= 0)
+            throw new HttpException('Grupo não encontrado', HttpStatus.NOT_FOUND)
+
+        if (typeof grupos[0].memberUid == 'string')
+            grupos[0].memberUid = [grupos[0].memberUid]
+        return grupos
     }
 
     async adicionar(grupo: Grupo) {
+        const grupos = await this.ldap.find(`(&(cn=${grupo.nome})(objectClass=posixGroup))`, ["memberUid", "cn"])
+        if (grupos.length > 0)
+            throw new HttpException('Já existe um grupo com este nome', HttpStatus.BAD_REQUEST)
         await this.ldap.add(grupo)
         return grupo;
     }
@@ -42,7 +51,7 @@ export class GrupoService {
     async atualizar(grupo: Grupo) {
 
         await this.ldap.update(grupo)
-        if (grupo.novoNome && grupo.nome != grupo.nome)
+        if (grupo.novoNome && grupo.novoNome != grupo.nome)
             await this.ldap.updateDN(grupo, grupo.novoNome)
         return grupo
     }

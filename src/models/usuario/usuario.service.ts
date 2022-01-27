@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import LdapConn from 'src/common/ldap.conn';
 import { Usuario, UsuarioAtualizado } from 'src/models/usuario';
+import { Grupo } from '../grupo/grupo.entity';
+import { GrupoService } from '../grupo/grupo.service';
 
 @Injectable()
 export class UsuarioService {
 
   private usuarios: Array<Usuario> = [];
+  private grupoService = new GrupoService();
   private ldap = new LdapConn();
 
   /**
@@ -21,7 +24,7 @@ export class UsuarioService {
   }
 
   async detalharUsuario(id: string) {
-    
+
     const usuario = await this.ldap.find(`(uid=${id})`, ["initials", "sn", "displayName", "uid", "cn"])
     if (usuario[0]) usuario[0].grupo = await this.ldap.find(`(memberUid=${id})`, ["cn"])
     return usuario
@@ -29,6 +32,8 @@ export class UsuarioService {
 
   async adicionar(usuario: Usuario) {
     await this.ldap.add(usuario)
+    if (usuario.grupo)
+      await this.grupoService.atualizar(new Grupo(usuario.grupo, [usuario.identidade]))
     return usuario;
   }
 

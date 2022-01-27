@@ -15,5 +15,5 @@ export function gerarToken(usuario: any) {
     }, process.env.SECRET || 'secret', {
         expiresIn: "6000000"
     });
-    return { type: 'Bearer', token: token }
+    return token
 }

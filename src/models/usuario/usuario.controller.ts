@@ -24,6 +24,7 @@ export class UsuariosController {
     @Post()
     @HttpCode(201)
     async cria(@Body() usuario: Usuario): Promise<Usuario> {
+        console.log(usuario)
         const usuarioExiste = await this.usuarioService.detalharUsuario(usuario.identidade)
         if (usuarioExiste[0])
             throw new HttpException('Ja existe um usuário com esta identidade', HttpStatus.BAD_REQUEST)
@@ -40,7 +41,7 @@ export class UsuariosController {
     }
 
     @Delete(":id")
-    async deletar(@Param() id: string) {
+    async deletar(@Param('id') id: string) {
         try {
             await this.usuarioService.deletar(id);
         } catch {

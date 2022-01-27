@@ -1,9 +1,9 @@
-import { IsArray, IsEmail, IsNotEmpty, IsNumberString } from 'class-validator';
+import { IsNotEmpty, IsNumberString, Allow } from 'class-validator';
 import { gerarHash } from 'src/common/auth';
 
 export class Usuario {
 
-    @IsEmail()
+    @IsNotEmpty()
     email: string;
     @IsNotEmpty()
     @IsNumberString()
@@ -14,6 +14,8 @@ export class Usuario {
     nome: string;
     @IsNotEmpty()
     sobrenome: string;
+    @Allow()
+    grupo: string;
 
     getSenha() {
         if (this.senha)

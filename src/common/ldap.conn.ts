@@ -145,6 +145,8 @@ export default class LdapConn {
         } else if (registro instanceof Grupo) {
             const registroLdap = await this.find(`(&(cn=${registro.nome})(objectClass=posixGroup))`, ["dn", "memberUid"])
             let usuariosNoGrupo: Array<string> = registroLdap[0].memberUid
+            if (typeof usuariosNoGrupo == 'string')
+                usuariosNoGrupo = [usuariosNoGrupo]
             const usuariosParaAtualizar: Array<string> = registro.usuarios
             usuariosParaAtualizar?.forEach(usuario => {
                 if (usuariosNoGrupo.includes(usuario)) {
@@ -173,6 +175,9 @@ export default class LdapConn {
             return await this.run(() => this.client.modifyDN(registroLdap[0].dn, `uid=${novoNome}`));
 
         } else if (registro instanceof Grupo) {
+            const registroLdap = await this.find(`(cn=${registro.nome})`)
+            console.log(registroLdap,'  registro:',registro)
+            return await this.run(() => this.client.modifyDN(registroLdap[0].dn, `cn=${registro.novoNome}`));
 
         }
 

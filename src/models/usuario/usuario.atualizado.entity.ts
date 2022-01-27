@@ -9,7 +9,7 @@ export class UsuarioAtualizado {
     novaIdentidade: string;
 
     @ValidateIf(x => x.email)
-    @IsEmail()
+    @IsString()
     email: string;
 
     @ValidateIf(x => x.senha)
