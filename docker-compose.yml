@@ -1,0 +1,57 @@
+version: "3.1"
+services:
+  nestjs-app:
+    container_name: nestjs-app
+    build:
+      context: .
+    volumes:
+      - ./api:/opt
+      - /opt/node_modules
+    ports:
+      - "3001:3001"
+    command: npm run start:debug
+    environment:
+      url: "ldap://ldap:389"
+      bindDN: "cn=admin,dc=exemplo,dc=com"
+      bindCredentials: "admin"
+      searchBase: "dc=exemplo,dc=com"
+      userSearchFilter: "(&(uid=*)(objectClass=posixAccount))"
+      userSearchBase: "ou=people,dc=exemplo,dc=com"
+      groupSearchBase: "ou=groups,dc=exemplo,dc=com"
+      groupSearchFilter: "(objectClass=posixGroup)"
+    networks:
+      - webnet
+    restart: unless-stopped
+  app:
+    container_name: react-app
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+        - './frontend/:/app'
+        - '/app/node_modules'
+    ports:
+        - '3000:3000'
+    networks:
+      - webnet
+    restart: unless-stopped
+        
+  ldap:
+    container_name: ldap
+    image: osixia/openldap
+    environment:
+      LDAP_ORGANISATION: "exemplo.com"
+      LDAP_DOMAIN: "exemplo.com"
+      LDAP_ADMIN_PASSWORD: "admin"
+    volumes:
+      - ./slapd/database:/var/lib/ldap
+      - ./slapd/config:/etc/ldap/slapd.d
+    ports:
+      - 389:389
+      - 636:636
+    networks:
+      - webnet
+    restart: unless-stopped
+networks:
+  webnet:
+    driver: bridge

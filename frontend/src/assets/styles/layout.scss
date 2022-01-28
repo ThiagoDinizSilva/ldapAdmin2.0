@@ -1,0 +1,42 @@
+@import './variables.scss';
+
+.header {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.lastMenuItem {
+    position: absolute;
+    bottom: 3%;
+    display: flex;
+    width: 100%;
+}
+
+.mainContent {
+    width: 60%;
+    position: absolute;
+    left: 50%;
+    top: 100px;
+    transform: translate(-50%, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border-radius: $radius;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+h2 {
+    font-family: $OpenSans;
+    text-transform: uppercase;
+    color: $primaryColor;
+    position: absolute;
+    top: -50px;
+    left: 0px;
+}
