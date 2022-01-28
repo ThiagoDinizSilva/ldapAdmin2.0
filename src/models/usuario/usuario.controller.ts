@@ -24,7 +24,6 @@ export class UsuariosController {
     @Post()
     @HttpCode(201)
     async cria(@Body() usuario: Usuario): Promise<Usuario> {
-        console.log(usuario)
         const usuarioExiste = await this.usuarioService.detalharUsuario(usuario.identidade)
         if (usuarioExiste[0])
             throw new HttpException('Ja existe um usuário com esta identidade', HttpStatus.BAD_REQUEST)
@@ -34,6 +33,9 @@ export class UsuariosController {
     @Put(":id")
     async atualizar(@Param('id') id: string, @Body() usuario: UsuarioAtualizado) {
         usuario.identidade = id
+        if (id.includes('admin') && usuario.novaIdentidade.includes('admin'))
+            throw new HttpException('O usuario admin não pode ter sua identidade alterada', HttpStatus.BAD_REQUEST)
+
         const usuarioExiste = await this.usuarioService.detalharUsuario(usuario.identidade)
         if (!usuarioExiste[0])
             throw new HttpException('Não é possível atualizar um usuário que não foi cadastrado', HttpStatus.BAD_REQUEST)
@@ -42,6 +44,8 @@ export class UsuariosController {
 
     @Delete(":id")
     async deletar(@Param('id') id: string) {
+        if (id.includes('admin'))
+            throw new HttpException('O usuario Admin não pode ser atualizado ou excluido', HttpStatus.BAD_REQUEST)
         try {
             await this.usuarioService.deletar(id);
         } catch {

@@ -28,6 +28,8 @@ export class GrupoController {
     @Put(":id")
     async atualizar(@Param('id') id: string, @Body() grupo: Grupo) {
         grupo.nome = id
+        if (grupo.usuarios.includes('admin') && id.includes('admin'))
+            throw new HttpException('O usuario Admin não pode ser removido do grupo Admin', HttpStatus.BAD_REQUEST)
         const grupoExiste = await this.grupoService.detalharGrupo(grupo.nome)
         if (!grupoExiste[0])
             throw new HttpException('Não é possível atualizar um usuário que não foi cadastrado', HttpStatus.BAD_REQUEST)

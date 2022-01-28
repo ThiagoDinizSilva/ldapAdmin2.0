@@ -126,8 +126,10 @@ export default class LdapConn {
             const camposParaAtualizar = {
                 mail: registro.email,
                 userPassword: registro.getSenha(),
-                name: registro.nome,
-                sn: registro.sobrenome
+                givenName: registro.nome,
+                sn: registro.sobrenome,
+                cn: registro.nome,
+                displayName: `${registro.nome} ${registro.sobrenome}`
             };
             for (const key in camposParaAtualizar) {
                 const element = camposParaAtualizar[key];

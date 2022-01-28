@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import LdapConn from "src/common/ldap.conn";
-import { Usuario } from "../usuario";
 import { Grupo } from "./grupo.entity";
 
 

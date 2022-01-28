@@ -18,14 +18,14 @@ export class UsuarioService {
     * @returns {Array<Object>} retorna uma lista de usuários cuja id começa com 123
     **/
   async listarUsuarios(id?: string): Promise<Usuario[]> {
-    if (id) return await this.ldap.find(`(uid=${id}*)`, ["initials", "sn", "displayName", "uid", "cn"])
+    if (id) return await this.ldap.find(`(uid=${id}*)`, ["initials", "sn", "displayName", "uid", "givenName"])
     this.usuarios = await this.ldap.find('(uid=*)', ["displayName", "uid"])
     return this.usuarios
   }
 
   async detalharUsuario(id: string) {
 
-    const usuario = await this.ldap.find(`(uid=${id})`, ["initials", "sn", "displayName", "uid", "cn"])
+    const usuario = await this.ldap.find(`(uid=${id})`, ["initials", "sn", "displayName", "uid", "givenName", "mail"])
     if (usuario[0]) usuario[0].grupo = await this.ldap.find(`(memberUid=${id})`, ["cn"])
     return usuario
   }

@@ -1,4 +1,4 @@
-import { Allow, IsArray, IsNotEmpty, Length, ValidateIf } from 'class-validator';
+import { Allow, IsArray, IsNotEmpty, ValidateIf } from 'class-validator';
 import { Usuario } from '../usuario/usuario.entity';
 
 export class Grupo {
