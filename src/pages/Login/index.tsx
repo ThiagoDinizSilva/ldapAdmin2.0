@@ -1,57 +1,55 @@
 import React, { useState } from 'react';
-import styled from '../../assets/styles/login.module.scss'
+import '../../assets/styles/login.scss'
 import { Button, Input } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
 import { useAuth } from '../../context/auth';
 
-function Login() {
+export const Login: React.FC = () => {
+
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [status, setStatus] = useState({ loading: false, error: "" });
     const context = useAuth();
+
     const handleSignIn = async e => {
         try {
             e.preventDefault();
-            setStatus({ loading: true })
+            setStatus({ loading: true, error: "" })
             const response = await context.Login(user, password)
-            if (response.status) {
-                window.location.reload();
-            } else {
-                throw new Error(response);
-            }
-        } catch (err) {
-            setStatus({ ...status, loading: false })
-            console.log(err)
-            alert('11' + err.message);
+            window.location.reload();
+        } catch (e: any) {
+            setStatus({ ...status, loading: false, error: e.response.data.message })
+            // alert(response.data.message);
         }
     };
     return (
-        <div className={styled.mainDiv}>
+        <div className='mainDiv'>
             <div>
-                <div className={styled.loginFormImgDiv}>
+                <div className='loginFormImgDiv'>
                     <img src='/esao.png' />
                     <div />
                 </div>
             </div>
             <form id="loginForm"
-                className={styled.loginForm}
+                className='loginForm'
                 onSubmit={handleSignIn}>
                 <div>
                     <Input
                         onChange={(event) => setUser(event.target.value)}
-                        valoe={user}
+                        value={user}
                         placeholder='Identidade'
                         type='text'
                         required
                     />
                     <Input
                         onChange={(event) => setPassword(event.target.value)}
-                        valoe={password}
+                        value={password}
                         placeholder='Senha'
                         type='password'
                         required
                     />
+                    <div>{status.error ? <p>{status.error}</p> : null}</div>
                 </div>
                 {status.loading ?
                     <LoadingButton
@@ -70,5 +68,3 @@ function Login() {
         </div>
     );
 }
-
-export default Login;

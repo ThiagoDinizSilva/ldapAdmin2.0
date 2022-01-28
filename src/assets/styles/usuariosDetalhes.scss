@@ -1,0 +1,17 @@
+@import './variables.scss';
+
+.usuariosDetalhes-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    button {
+        margin-top: auto;
+    }
+
+    >div {
+        >div {
+            margin: 1% 2% 2% 0px;
+        }
+    }
+}

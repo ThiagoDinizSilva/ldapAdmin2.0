@@ -1,0 +1,49 @@
+@import './variables.scss';
+
+.grupo-formulario {
+    width: 100%;
+}
+
+.grupo-formulario-textDanger {
+    >div {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    p {
+        height: 0.9rem;
+        margin-bottom: 10%;
+        font-size: 0.9rem;
+        color: red;
+        font-family: $SourceSans;
+    }
+
+    button {
+        margin-left: 12px;
+    }
+}
+
+.grupo-content-ul {
+    width: 100%;
+    height: 30vw;
+    overflow-y: auto;
+
+    button {
+        margin: 0px 2px;
+
+    }
+
+    svg {
+        pointer-events: none;
+    }
+
+    >div {
+        transition: all 0.25s;
+
+        &:hover {
+            background-color: $primaryColor;
+        }
+    }
+}

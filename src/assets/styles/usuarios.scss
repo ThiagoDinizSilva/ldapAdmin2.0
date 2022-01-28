@@ -1,0 +1,45 @@
+@import './variables.scss';
+
+.usuario-cadastro-formulario {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    >div {
+        width: 25%;
+        margin-right: 5%;
+    }
+
+    p {
+        width: 100%;
+        height: 0.9rem;
+        margin-bottom: 4%;
+        font-size: 0.9rem;
+        color: red;
+        font-family: $SourceSans;
+    }
+}
+
+.usuario-cadastro-content-ul {
+    width: 100%;
+    height: 400px;
+    overflow-y: auto;
+
+    button {
+        margin: 0px 2px;
+
+    }
+
+    svg {
+        pointer-events: none;
+    }
+
+    >div {
+        transition: all 0.25s;
+
+        &:hover {
+            background-color: $primaryColor;
+        }
+    }
+}

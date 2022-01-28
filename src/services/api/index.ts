@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
- baseURL: 'https://localhost:3000',
+ baseURL: 'http://api.dryad.tld:3001',
+ headers: {
+
+ }
 });
 
 export default api;

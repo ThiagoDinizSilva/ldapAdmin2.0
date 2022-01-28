@@ -1,10 +1,10 @@
 import React from "react";
 import { useAuth } from "../context/auth";
 
-import PrivateRoutes from "./PrivateRoutes";
-import PublicRoutes from "./PublicRoutes";
+import { PrivateRoutes } from "./PrivateRoutes";
+import { PublicRoutes } from "./PublicRoutes";
 
-function Routes() {
+export const Routes: React.FC = () => {
   const { signed } = useAuth();
   return signed ? <PrivateRoutes /> : <PublicRoutes />;
 }
