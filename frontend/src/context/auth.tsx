@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }: LayoutRouteProps) => {
 
   function Logout() {
     setUser(null);
-    sessionStorage.removeItem("@App:user");
-    sessionStorage.removeItem("App:token");
+    localStorage.removeItem("@App:user");
+    localStorage.removeItem("@App:token");
   }
 
   return (

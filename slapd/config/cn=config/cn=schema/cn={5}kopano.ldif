@@ -1,5 +1,5 @@
 # AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
-# CRC32 1cba0b73
+# CRC32 996c196d
 dn: cn={5}kopano
 objectClass: olcSchemaConfig
 cn: {5}kopano
@@ -167,9 +167,9 @@ olcObjectClasses: {6}( 1.3.6.1.4.1.47732.1.7.0.0 NAME 'kopano-dynamicgroup'
  noAccount $ kopanoHidden $ mail $ kopanoAliases $ kopanoFilter $ kopanoBase
   ) )
 structuralObjectClass: olcSchemaConfig
-entryUUID: 2be6a2ee-147f-103c-9092-49280bd529bf
+entryUUID: d68ce026-16f7-103c-8757-7972ec0c620d
 creatorsName: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-createTimestamp: 20220128121130Z
-entryCSN: 20220128121130.757669Z#000000#000#000000
+createTimestamp: 20220131154018Z
+entryCSN: 20220131154018.992913Z#000000#000#000000
 modifiersName: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-modifyTimestamp: 20220128121130Z
+modifyTimestamp: 20220131154018Z

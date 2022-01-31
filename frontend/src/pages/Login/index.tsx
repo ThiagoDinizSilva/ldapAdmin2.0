@@ -27,7 +27,7 @@ export const Login: React.FC = () => {
         <div className='mainDiv'>
             <div>
                 <div className='loginFormImgDiv'>
-                    <img src='/esao.png' />
+                    <img src='/logo.png' />
                     <div />
                 </div>
             </div>

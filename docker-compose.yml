@@ -3,10 +3,11 @@ services:
   nestjs-app:
     container_name: nestjs-app
     build:
-      context: .
+        context: ./api
+        dockerfile: Dockerfile
     volumes:
-      - ./api:/opt
-      - /opt/node_modules
+      - ./api/:/app
+      - /app/node_modules
     ports:
       - "3001:3001"
     command: npm run start:debug
@@ -25,7 +26,7 @@ services:
   app:
     container_name: react-app
     build:
-        context: .
+        context: ./frontend
         dockerfile: Dockerfile
     volumes:
         - './frontend/:/app'
@@ -35,7 +36,6 @@ services:
     networks:
       - webnet
     restart: unless-stopped
-        
   ldap:
     container_name: ldap
     image: osixia/openldap
