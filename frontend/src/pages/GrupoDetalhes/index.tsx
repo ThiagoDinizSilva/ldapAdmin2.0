@@ -1,10 +1,9 @@
 import { Avatar, Button, IconButton, Input, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import { Delete, Add } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../../assets/styles/gruposDetalhes.scss'
+import styled from '../../assets/styles/gruposDetalhes.module.scss'
 import api from '../../services/api';
 import { Person } from '@mui/icons-material';
 export const GrupoDetalhes: React.FC = () => {
@@ -93,7 +92,7 @@ export const GrupoDetalhes: React.FC = () => {
     return (
         <>
             <h2>Grupo: {id}</h2>
-            <form className='gruposDetalhes-formulario'
+            <form className={styled.formulario}
                 onSubmit={handleForm}
                 id="gruposDetalhes"
             >
@@ -116,10 +115,10 @@ export const GrupoDetalhes: React.FC = () => {
                     {status.error ? <p>{status.error}</p> : <p />}
                 </div>
             </form>
-            <div className='gruposDetalhes-divs'>
-                <div className='gruposDetalhes-label-ul'>
+            <div className={styled.grupos}>
+                <div>
                     <p>Membros do Grupo</p>
-                    <ul className='gruposDetalhes-content-ul'>
+                    <ul>
                         {state.listaDeUsuarios.map(e => {
                             return <div key={e}
                             >
@@ -147,9 +146,9 @@ export const GrupoDetalhes: React.FC = () => {
                         })}
                     </ul>
                 </div>
-                <div className='gruposDetalhes-label-ul'>
+                <div>
                     <p>Outros Usuarios</p>
-                    <ul className='gruposDetalhes-content-ul'>
+                    <ul>
                         {state.listaOutrosUsuarios.map((e, index) => {
                             return <div key={`${index},${e}`}
                             >

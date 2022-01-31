@@ -1,7 +1,7 @@
 import { Avatar, Button, IconButton, Input, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
-import '../../assets/styles/grupos.scss'
+import styled from '../../assets/styles/grupos.module.scss'
 import { Edit, Group } from '@mui/icons-material';
 import api from '../../services/api';
 import { Link } from 'react-router-dom';
@@ -79,11 +79,11 @@ export const Grupos: React.FC = () => {
     return (
         <>
         <h2>Grupos</h2>
-            <form className='grupo-formulario'
+            <form className={styled.formulario}
                 onSubmit={handleForm}
                 id="grupoForm"
             >
-                <div className="grupo-formulario-textDanger">
+                <div className={styled.textDanger}>
                     <div>
                         <Input
                             className='half'
@@ -112,7 +112,7 @@ export const Grupos: React.FC = () => {
                 </div>
             </form >
 
-            <ul className='grupo-content-ul'>
+            <ul className={styled.contentUl}>
                 {state.listaDeGrupos.map(e => {
                     return <div>
                         <ListItem

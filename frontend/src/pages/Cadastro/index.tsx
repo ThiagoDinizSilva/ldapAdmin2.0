@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Input, InputLabel, Select, MenuItem, FormControl, Button, TextField } from '@mui/material';
-import '../../assets/styles/cadastro.scss'
+import styled from '../../assets/styles/cadastro.module.scss'
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
 import api from '../../services/api';
@@ -108,12 +108,12 @@ export const Cadastro: React.FC = () => {
     return (
         <Fragment>
             <h2>Cadastro</h2>
-            <form className='cadastro-formulario'
+            <form className={styled.formulario}
                 onSubmit={handleForm}
                 id="cadastroForm"
             >
                 <div>
-                    <div className="cadastro-formulario-textDanger">
+                    <div className={styled.textDanger}>
                         <TextField id="outlined-basic"
                             label="Identidade"
                             variant="outlined"
@@ -181,11 +181,11 @@ export const Cadastro: React.FC = () => {
                         value={state.senhaConfirmacao}
                         onChange={(e) => setState({ ...state, senhaConfirmacao: e.target.value })}
                     />
-                    <div className="cadastro-formulario-verificaSenha">
+                    <div className={styled.verificaSenha}>
                         {state.passwordMatch ? <p /> : <p>Senhas não conferem</p>}
                     </div>
                 </div>
-                <div className='cadastro-formulario-selectForm'>
+                <div className={styled.selectForm}>
                     <FormControl fullWidth>
                         <InputLabel id="selecione">Selecione</InputLabel>
                         <Select
@@ -204,7 +204,7 @@ export const Cadastro: React.FC = () => {
                         </Select>
                     </FormControl>
                 </div>
-                <div className='cadastro-formulario-enviarForm'>
+                <div className={styled.enviarForm}>
                     {status.loading ?
                         <LoadingButton
                             loading

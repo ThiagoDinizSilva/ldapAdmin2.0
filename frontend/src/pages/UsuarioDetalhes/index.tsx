@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SaveIcon from '@mui/icons-material/Save';
 import api from '../../services/api';
-import '../../assets/styles/usuariosDetalhes.scss'
+import styled from '../../assets/styles/usuariosDetalhes.module.scss'
 
 export const UsuarioDetalhes: React.FC = () => {
     const navigate = useNavigate();
@@ -80,7 +80,7 @@ export const UsuarioDetalhes: React.FC = () => {
         <>
             <h2>Usuario: {id}</h2>
             <form
-                className='usuariosDetalhes-form'
+                className={styled.formulario}
                 onSubmit={handleForm}
                 id="atualizarUsuario">
                 <div>

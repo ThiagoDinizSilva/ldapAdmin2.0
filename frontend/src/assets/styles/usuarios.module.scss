@@ -1,33 +1,29 @@
 @import './variables.scss';
 
-.grupo-formulario {
+.formulario {
     width: 100%;
-}
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 
-.grupo-formulario-textDanger {
     >div {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        width: 25%;
+        margin-right: 5%;
     }
 
     p {
+        width: 100%;
         height: 0.9rem;
-        margin-bottom: 10%;
+        margin-bottom: 4%;
         font-size: 0.9rem;
         color: red;
         font-family: $SourceSans;
     }
-
-    button {
-        margin-left: 12px;
-    }
 }
 
-.grupo-content-ul {
+.contentUl {
     width: 100%;
-    height: 30vw;
+    height: 400px;
     overflow-y: auto;
 
     button {

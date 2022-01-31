@@ -1,7 +1,7 @@
 import { Avatar, Button, IconButton, Input, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { Fragment, useEffect, useState } from 'react';
-import '../../assets/styles/usuarios.scss'
+import styled from '../../assets/styles/usuarios.module.scss'
 import { Edit, Person } from '@mui/icons-material';
 import api from '../../services/api';
 import { Link } from 'react-router-dom';
@@ -71,7 +71,7 @@ export const Usuarios: React.FC = () => {
     return (
         <Fragment>
             <h2>Usuarios</h2>
-            <form className='usuario-cadastro-formulario'
+            <form className={styled.formulario}
                 onSubmit={handleForm}
                 id="usuarioForm"
             >
@@ -93,7 +93,7 @@ export const Usuarios: React.FC = () => {
                 {status.error ? <p>{status.error}</p> : <p />}
             </form>
 
-            <ul className='usuario-cadastro-content-ul'>
+            <ul className={styled.contentUl}>
                 {state.listaDeUsuarios[0] ? state.listaDeUsuarios.map((e: IUserProps) => {
                     return <div>
                         <ListItem

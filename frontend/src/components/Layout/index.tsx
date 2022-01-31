@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useNavigate } from "react-router-dom";
-import '../../assets/styles/layout.scss';
+import styled from '../../assets/styles/layout.module.scss';
 import { Box, SwipeableDrawer, Button, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Menu, VerifiedUser, PersonAdd, Home, Logout, Person } from '@mui/icons-material';
 import { useAuth } from '../../context/auth';
@@ -27,7 +27,7 @@ export const Layout: React.FC = ({ children }) => {
 
     return (
         <Fragment>
-            <div className='header'>
+            <div className={styled.header}>
                 <Fragment key={'anchor'}>
                     <Button onClick={toggleDrawer()}><Menu /></Button>
                     <SwipeableDrawer
@@ -68,7 +68,7 @@ export const Layout: React.FC = ({ children }) => {
                                 </ListItem>
                             </List>
                         </Box>
-                        <div className='lastMenuItem'>
+                        <div className={styled.lastMenuItem}>
                             <ListItem button key={'Logout'} onClick={() => context.Logout()}>
                                 <ListItemIcon>
                                     <Logout />
@@ -79,7 +79,7 @@ export const Layout: React.FC = ({ children }) => {
                     </SwipeableDrawer>
                 </Fragment>
             </div >
-            <div className='mainContent'>
+            <div className={styled.mainContent}>
                 {children}
             </div>
         </Fragment>

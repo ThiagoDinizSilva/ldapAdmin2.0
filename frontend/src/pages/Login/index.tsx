@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../assets/styles/login.scss'
+import styled from '../../assets/styles/login.module.scss'
 import { Button, Input } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
@@ -12,7 +12,7 @@ export const Login: React.FC = () => {
     const [status, setStatus] = useState({ loading: false, error: "" });
     const context = useAuth();
 
-    const handleSignIn = async e => {
+    const handleSignIn = async (e: { preventDefault: () => void; }): Promise<any> => {
         try {
             e.preventDefault();
             setStatus({ loading: true, error: "" })
@@ -24,15 +24,15 @@ export const Login: React.FC = () => {
         }
     };
     return (
-        <div className='mainDiv'>
+        <div className={styled.mainDiv}>
             <div>
-                <div className='loginFormImgDiv'>
+                <div className={styled.loginFormImgDiv}>
                     <img src='/logo.png' />
                     <div />
                 </div>
             </div>
             <form id="loginForm"
-                className='loginForm'
+                className={styled.loginForm}
                 onSubmit={handleSignIn}>
                 <div>
                     <Input

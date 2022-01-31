@@ -1,6 +1,6 @@
 @import './variables.scss';
 
-.gruposDetalhes-formulario {
+.formulario {
     width: 100%;
 
     >div {
@@ -24,7 +24,7 @@
     }
 }
 
-.gruposDetalhes-divs {
+.grupos {
     width: 100%;
     display: flex;
     justify-content: space-around;
