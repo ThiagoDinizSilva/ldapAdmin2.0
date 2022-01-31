@@ -32,8 +32,9 @@ export class UsuarioService {
 
   async adicionar(usuario: Usuario) {
     await this.ldap.add(usuario)
-    if (usuario.grupo)
-      await this.grupoService.atualizar(new Grupo(usuario.grupo, [usuario.identidade]))
+    for (const grupo of usuario.grupo) {
+      await this.grupoService.atualizar(new Grupo(grupo, [usuario.identidade]))
+    }
     return usuario;
   }
 

@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Input, InputLabel, Select, MenuItem, FormControl, Button, TextField } from '@mui/material';
+import { Input, InputLabel, Select, MenuItem, FormControl, Button, TextField, OutlinedInput, Checkbox, ListItemText } from '@mui/material';
 import styled from '../../assets/styles/cadastro.module.scss'
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
@@ -9,7 +9,7 @@ interface IState {
     identidade: string;
     nome: string;
     sobrenome: string;
-    grupo: string;
+    grupoSelecionado: Array<string>;
     listaDeGrupos: Array<string>;
     senha: string;
     senhaConfirmacao: string;
@@ -31,7 +31,7 @@ export const Cadastro: React.FC = () => {
         senha: '',
         senhaConfirmacao: '',
         email: '',
-        grupo: '',
+        grupoSelecionado: [],
         listaDeGrupos: [],
         passwordMatch: true
     })
@@ -58,10 +58,21 @@ export const Cadastro: React.FC = () => {
             sobrenome: state.sobrenome,
             email: state.email,
             senha: state.senha,
-            grupo: state.grupo
+            grupo: state.grupoSelecionado
 
         })
-            .then((response) => {
+            .then(async (response) => {
+                /* const adicionarUsuarioNosGrupos = state.grupoSelecionado.map(async (grupo: string) => {
+                    await api.put(`/grupos/${grupo}`, {
+                        usuarios: [state.identidade]
+                    }).catch(({ response }) => {
+                        if (response.status == 400)
+                            setStatus({ loading: false, error: response.data.message })
+                        console.log(response)
+                    });
+                })
+                await Promise.all(adicionarUsuarioNosGrupos); */
+
                 alert(`Usuário ${state.identidade} cadastrado com sucesso!`)
                 setStatus({ loading: false, error: "" })
                 setState({
@@ -72,7 +83,7 @@ export const Cadastro: React.FC = () => {
                     senha: '',
                     senhaConfirmacao: '',
                     email: '',
-                    grupo: '',
+                    grupoSelecionado: [],
                     passwordMatch: true
                 })
             }).catch(({ response }) => {
@@ -114,7 +125,7 @@ export const Cadastro: React.FC = () => {
             >
                 <div>
                     <div className={styled.textDanger}>
-                        <TextField id="outlined-basic"
+                        <TextField
                             label="Identidade"
                             variant="outlined"
                             required
@@ -127,7 +138,7 @@ export const Cadastro: React.FC = () => {
                         />
                         {status.error ? <p>{status.error}</p> : <p />}
                     </div>
-                    <TextField id="outlined-basic"
+                    <TextField
                         label="Primeiro Nome"
                         variant="outlined"
                         required
@@ -137,7 +148,7 @@ export const Cadastro: React.FC = () => {
                         value={state.nome}
                         onChange={(e) => setState({ ...state, nome: e.target.value })}
                     />
-                    <TextField id="outlined-basic"
+                    <TextField
                         label="Sobrenome"
                         variant="outlined"
                         required
@@ -159,7 +170,7 @@ export const Cadastro: React.FC = () => {
                         value={state.senha}
                         onChange={(e) => setState({ ...state, senha: e.target.value })}
                     />
-                    <TextField id="outlined-basic"
+                    <TextField
                         label="E-Mail"
                         variant="outlined"
                         required
@@ -190,15 +201,21 @@ export const Cadastro: React.FC = () => {
                         <InputLabel id="selecione">Selecione</InputLabel>
                         <Select
                             required
+                            multiple
                             labelId="selecione"
                             id="selecione"
                             label="Selecione"
-                            value={state.grupo}
-                            onChange={(e) => setState({ ...state, grupo: e.target.value })}
+                            input={<OutlinedInput label="Tag" />}
+                            value={state.grupoSelecionado}
+                            renderValue={() => state.grupoSelecionado.join(', ')}
+                            onChange={(e) => setState({ ...state, grupoSelecionado: e.target.value })}
                             MenuProps={MenuProps}
                         >
                             {state.listaDeGrupos.map((e) => {
-                                return <MenuItem key={e} value={e}>{e}</MenuItem>
+                                return <MenuItem key={e} value={e}>
+                                    <Checkbox checked={state.grupoSelecionado.indexOf(e) > -1} />
+                                    <ListItemText primary={e} />
+                                </MenuItem>
 
                             })}
                         </Select>
@@ -220,6 +237,6 @@ export const Cadastro: React.FC = () => {
                     }
                 </div>
             </form>
-        </Fragment>
+        </Fragment >
     )
 }
