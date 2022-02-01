@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from '../../assets/styles/layout.module.scss';
 import { Box, SwipeableDrawer, Button, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { GitHub, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
 import { Menu, VerifiedUser, PersonAdd, Home, Logout, Person } from '@mui/icons-material';
 import { useAuth } from '../../context/auth';
 
@@ -81,6 +82,16 @@ export const Layout: React.FC = ({ children }) => {
             </div >
             <div className={styled.mainContent}>
                 {children}
+            </div>
+            <div className={styled.contactInfo}>
+                <p> Projeto Dryad LdapAdmin2.0 Desenvolvido por Thiago Diniz </p>
+                <div>
+                    <p>Entre em contato:</p>
+                    <a target="_blank" rel="noreferrer" href="https://www.instagram.com/diniz_dev/"><Instagram /></a>
+                    <a target="_blank" rel="noreferrer" href="https://twitter.com/diniz_dev"><Twitter /></a>
+                    <a target="_blank" rel="noreferrer" href="https://github.com/ThiagoDinizSilva"><GitHub /></a>
+                    <a target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/thiagodinizsilva/"><LinkedIn /></a>
+                </div>
             </div>
         </Fragment>
     )

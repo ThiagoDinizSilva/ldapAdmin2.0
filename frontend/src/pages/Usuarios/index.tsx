@@ -1,4 +1,4 @@
-import { Avatar, Button, IconButton, Input, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { Avatar, Button, IconButton, Input, ListItem, ListItemAvatar, ListItemText, Pagination, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from '../../assets/styles/usuarios.module.scss'
@@ -18,16 +18,23 @@ export const Usuarios: React.FC = () => {
     })
     const [state, setState] = useState({
         nome: '',
-        listaDeUsuarios: []
+        listaDeUsuarios: [],
+        page: 1,
+        paginas: 0
     })
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setState({ ...state, page: value, listaDeUsuarios: [] });
+    };
 
     const handleForm = async (e: any) => {
         e.preventDefault();
-        await api.get(`/usuarios/?id=${state.nome}`)
+        await api.get(`/usuarios/?id=${state.nome}&page=${state.page}`)
             .then((response) => {
-                const listaDeUsuarios = response.data.map((e: any) => ({ uid: e.uid, displayName: e.displayName }))
-                setState({ ...state, listaDeUsuarios: listaDeUsuarios })
-                if (listaDeUsuarios.length >= 0)
+                const listaDeUsuarios = response.data.usuarios.map((e: any) => ({ uid: e.uid, displayName: e.displayName }))
+                console.log(listaDeUsuarios)
+                setState({ ...state, listaDeUsuarios: listaDeUsuarios, paginas: (~~(response.data.count / 50)) })
+                if (listaDeUsuarios.length <= 0)
                     alert(`Não foram encontrados registros com o nome: ${state.nome}`)
 
             }).catch(({ response }) => {
@@ -52,10 +59,10 @@ export const Usuarios: React.FC = () => {
     }
 
     const getUsuarios = async () => {
-        await api.get("/usuarios")
+        await api.get(`/usuarios/?page=${state.page}`)
             .then((response) => {
-                const listaDeUsuarios = response.data.map((e: any) => ({ uid: e.uid, displayName: e.displayName }))
-                setState({ ...state, listaDeUsuarios: listaDeUsuarios })
+                const listaDeUsuarios = response.data.usuarios.map((e: any) => ({ uid: e.uid, displayName: e.displayName }))
+                setState({ ...state, listaDeUsuarios: listaDeUsuarios, paginas: (~~(response.data.count / 50)) })
 
             }).catch(({ response }) => {
                 console.log(JSON.stringify(response))
@@ -92,7 +99,6 @@ export const Usuarios: React.FC = () => {
                 </Button>
                 {status.error ? <p>{status.error}</p> : <p />}
             </form>
-
             <ul className={styled.contentUl}>
                 {state.listaDeUsuarios[0] ? state.listaDeUsuarios.map((e: IUserProps) => {
                     return <div>
@@ -122,9 +128,8 @@ export const Usuarios: React.FC = () => {
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
-                                primary={e.displayName}
-                                secondary={`ID: ${e.uid}`}
-
+                                primary={e.uid}
+                                secondary={`${e.displayName}`}
                             />
                         </ListItem>
                     </div>
@@ -132,6 +137,9 @@ export const Usuarios: React.FC = () => {
                     <div />
                 }
             </ul>
+            <Stack spacing={2}>
+                <Pagination count={state.paginas} boundaryCount={1} page={state.page} onChange={handleChange} color="primary" />
+            </Stack>
         </Fragment>
     )
 }

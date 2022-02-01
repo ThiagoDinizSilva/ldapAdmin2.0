@@ -60,3 +60,39 @@
     top: -20px;
   }
 }
+
+.contactInfo {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+
+  p,
+  a,
+  svg {
+    color: rgba(119, 115, 115, 0.842);
+    transition: color 0.25s;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  >p {
+    text-align: center;
+    width: 100%;
+  }
+
+  >div {
+    display: flex;
+    justify-content: center;
+
+    * {
+      margin: 0px 2px;
+    }
+  }
+}

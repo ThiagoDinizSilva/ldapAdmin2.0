@@ -3,10 +3,9 @@ import { gerarHash } from 'src/common/auth';
 
 export class Usuario {
 
-    @IsNotEmpty()
+    @Allow()
     email: string;
     @IsNotEmpty()
-    @IsNumberString()
     identidade: string;
     @IsNotEmpty()
     private senha: string;
@@ -14,6 +13,8 @@ export class Usuario {
     nome: string;
     @IsNotEmpty()
     sobrenome: string;
+    @IsNotEmpty()
+    display: string;
     @Allow()
     grupo: string;
 

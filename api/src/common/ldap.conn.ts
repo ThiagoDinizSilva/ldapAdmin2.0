@@ -85,7 +85,7 @@ export default class LdapConn {
                 objectClass: ["posixAccount", "top", "inetOrgPerson"],
                 givenName: registro.nome,
                 sn: registro.sobrenome,
-                displayName: registro.nome,
+                displayName: registro.display,
                 userPassword: registro.getSenha(),
                 uid: registro.identidade,
                 cn: registro.identidade,
@@ -96,6 +96,7 @@ export default class LdapConn {
                 gidNumber: (Math.floor(Math.random() * 65534) + 1000).toString()
             };
             const dn = `uid=${registro.identidade},${this.userSearchBase}`
+            //            const dn = `uid=${registro.identidade},${this.userSearchBase}`
             await this.run(() => this.client.add(dn, entry));
 
         } else if (registro instanceof Grupo) {
@@ -129,7 +130,7 @@ export default class LdapConn {
                 givenName: registro.nome,
                 sn: registro.sobrenome,
                 cn: registro.nome,
-                displayName: `${registro.nome} ${registro.sobrenome}`
+                displayName: registro.display
             };
             for (const key in camposParaAtualizar) {
                 const element = camposParaAtualizar[key];
@@ -178,7 +179,7 @@ export default class LdapConn {
 
         } else if (registro instanceof Grupo) {
             const registroLdap = await this.find(`(cn=${registro.nome})`)
-            console.log(registroLdap,'  registro:',registro)
+            console.log(registroLdap, '  registro:', registro)
             return await this.run(() => this.client.modifyDN(registroLdap[0].dn, `cn=${registro.novoNome}`));
 
         }

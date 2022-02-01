@@ -9,11 +9,13 @@ interface IState {
     identidade: string;
     nome: string;
     sobrenome: string;
+    display: string;
     grupoSelecionado: Array<string>;
     listaDeGrupos: Array<string>;
     senha: string;
     senhaConfirmacao: string;
     email: string;
+    destino: string | string[];
     passwordMatch: Boolean;
 }
 
@@ -28,9 +30,11 @@ export const Cadastro: React.FC = () => {
         identidade: '',
         nome: '',
         sobrenome: '',
+        display: '',
         senha: '',
         senhaConfirmacao: '',
         email: '',
+        destino: '',
         grupoSelecionado: [],
         listaDeGrupos: [],
         passwordMatch: true
@@ -56,23 +60,14 @@ export const Cadastro: React.FC = () => {
             identidade: state.identidade,
             nome: state.nome,
             sobrenome: state.sobrenome,
+            display: state.display,
             email: state.email,
             senha: state.senha,
-            grupo: state.grupoSelecionado
+            grupo: state.grupoSelecionado,
+            destino: state.destino
 
         })
             .then(async (response) => {
-                /* const adicionarUsuarioNosGrupos = state.grupoSelecionado.map(async (grupo: string) => {
-                    await api.put(`/grupos/${grupo}`, {
-                        usuarios: [state.identidade]
-                    }).catch(({ response }) => {
-                        if (response.status == 400)
-                            setStatus({ loading: false, error: response.data.message })
-                        console.log(response)
-                    });
-                })
-                await Promise.all(adicionarUsuarioNosGrupos); */
-
                 alert(`Usuário ${state.identidade} cadastrado com sucesso!`)
                 setStatus({ loading: false, error: "" })
                 setState({
@@ -83,10 +78,14 @@ export const Cadastro: React.FC = () => {
                     senha: '',
                     senhaConfirmacao: '',
                     email: '',
+                    display: '',
                     grupoSelecionado: [],
                     passwordMatch: true
                 })
             }).catch(({ response }) => {
+                console.log(JSON.stringify(response))
+                alert(JSON.stringify(response))
+                setStatus({ loading: false, error: '' })
                 if (response.status == 400)
                     setStatus({ loading: false, error: response.data.message })
             });
@@ -159,6 +158,25 @@ export const Cadastro: React.FC = () => {
                         onChange={(e) => setState({ ...state, sobrenome: e.target.value })}
                     />
                     <TextField
+                        label="Nome de Guerra"
+                        variant="outlined"
+                        required
+                        className='half'
+                        autoFocus={true}
+                        type='text'
+                        value={state.display}
+                        onChange={(e) => setState({ ...state, display: e.target.value })}
+                    />
+                    <TextField
+                        label="E-Mail"
+                        variant="outlined"
+                        className='half'
+                        autoFocus={true}
+                        type='email'
+                        value={state.email}
+                        onChange={(e) => setState({ ...state, email: e.target.value })}
+                    />
+                    <TextField
                         label="Senha"
                         variant="outlined"
                         required
@@ -169,16 +187,6 @@ export const Cadastro: React.FC = () => {
                         type='password'
                         value={state.senha}
                         onChange={(e) => setState({ ...state, senha: e.target.value })}
-                    />
-                    <TextField
-                        label="E-Mail"
-                        variant="outlined"
-                        required
-                        className='half'
-                        autoFocus={true}
-                        type='email'
-                        value={state.email}
-                        onChange={(e) => setState({ ...state, email: e.target.value })}
                     />
                     <TextField
                         label="Confirme a Senha"
@@ -198,13 +206,13 @@ export const Cadastro: React.FC = () => {
                 </div>
                 <div className={styled.selectForm}>
                     <FormControl fullWidth>
-                        <InputLabel id="selecione">Selecione</InputLabel>
+                        <InputLabel id="selecione">Permissões</InputLabel>
                         <Select
                             required
                             multiple
                             labelId="selecione"
                             id="selecione"
-                            label="Selecione"
+                            label="Permissões"
                             input={<OutlinedInput label="Tag" />}
                             value={state.grupoSelecionado}
                             renderValue={() => state.grupoSelecionado.join(', ')}
@@ -220,7 +228,36 @@ export const Cadastro: React.FC = () => {
                             })}
                         </Select>
                     </FormControl>
+                    <FormControl fullWidth>
+                        <InputLabel id="destino">Destino</InputLabel>
+                        <Select
+                            required
+                            labelId="destino"
+                            id="destino"
+                            label="Destino"
+                            value={state.destino}
+                            onChange={(e) => setState({ ...state, destino: e.target.value })}
+                            MenuProps={MenuProps}
+                        >
+                            <MenuItem value={'ou=CArt,ou=cao,ou=formandos,ou=alunos'}>Alunos do CArt</MenuItem>
+                            <MenuItem value={'ou=CCav,ou=cao,ou=formandos,ou=alunos'}>Alunos do CCav</MenuItem>
+                            <MenuItem value={'ou=CCom,ou=cao,ou=formandos,ou=alunos'}>Alunos do CCom</MenuItem>
+                            <MenuItem value={'ou=CEng,ou=cao,ou=formandos,ou=alunos'}>Alunos do CEng</MenuItem>
+                            <MenuItem value={'ou=CInf,ou=cao,ou=formandos,ou=alunos'}>Alunos do CInf</MenuItem>
+                            <MenuItem value={'ou=CLog,ou=cao,ou=formandos,ou=alunos'}>Alunos do CLog</MenuItem>
+                            <MenuItem value={'ou=CSau,ou=cao,ou=formandos,ou=alunos'}>Alunos do CSau</MenuItem>
+                            <MenuItem value={'ou=OForcas,ou=cao,ou=formandos,ou=alunos'}>Alunos de Outras Forças</MenuItem>
+                            <MenuItem value={'ou=eceme,ou=formandos,ou=alunos'}>Alunos da ECEME</MenuItem>
+                            <MenuItem value={'ou=ona,ou=formandos,ou=alunos'}>Alunos ONAS</MenuItem>
+                            <MenuItem value={'ou=eceme'}>Militares da ECEME</MenuItem>
+                            <MenuItem value={'ou=CbSd,ou=EsAO'}>Cb/SD EsAO</MenuItem>
+                            <MenuItem value={'ou=stsgt,ou=EsAO'}>St/Sgt EsAO</MenuItem>
+                            <MenuItem value={'ou=oficiais,ou=EsAO'}>Oficiais EsAO</MenuItem>
+
+                        </Select>
+                    </FormControl>
                 </div>
+
                 <div className={styled.enviarForm}>
                     {status.loading ?
                         <LoadingButton

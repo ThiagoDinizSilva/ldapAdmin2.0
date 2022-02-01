@@ -9,9 +9,31 @@ export class UsuariosController {
     constructor(private usuarioService: UsuarioService) { }
 
     @Get()
-    async listarUsuarios(@Query('id') id): Promise<Usuario[]> {
-        if (id) return await this.usuarioService.listarUsuarios(id);
-        return await this.usuarioService.listarUsuarios();
+    async listarUsuarios(@Query('id') id, @Query('page') page) {
+        let listaDeUsuarios;
+        let primeiroRegistro;
+        let ultimoRegistro;
+
+        if (page <= 1) {
+            primeiroRegistro = 0
+        } else {
+            primeiroRegistro = page * 50
+            primeiroRegistro -= 1
+
+        }
+
+        ultimoRegistro = primeiroRegistro + 50;
+
+        if (id)
+            listaDeUsuarios = await this.usuarioService.listarUsuarios(id);
+        else {
+            listaDeUsuarios = await this.usuarioService.listarUsuarios();
+        }
+
+        return {
+            count: listaDeUsuarios.length(),
+            usuarios: listaDeUsuarios.slice(primeiroRegistro, ultimoRegistro)
+        }
     }
 
     @Get(":id")
@@ -46,6 +68,8 @@ export class UsuariosController {
     async deletar(@Param('id') id: string) {
         if (id.includes('admin'))
             throw new HttpException('O usuario Admin não pode ser atualizado ou excluido', HttpStatus.BAD_REQUEST)
+        if (id.includes('*'))
+            throw new HttpException(`Algo não ocorreu como deveria, não é possível deletar o usuário: ${id}`, HttpStatus.BAD_REQUEST)
         try {
             await this.usuarioService.deletar(id);
         } catch {

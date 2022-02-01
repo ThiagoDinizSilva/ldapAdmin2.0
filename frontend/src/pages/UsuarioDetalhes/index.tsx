@@ -13,6 +13,7 @@ export const UsuarioDetalhes: React.FC = () => {
         identidade: id,
         nome: '',
         sobrenome: '',
+        display: '',
         mail: '',
         senha: '',
         valid: false
@@ -28,9 +29,10 @@ export const UsuarioDetalhes: React.FC = () => {
         setStatus({ ...status, loading: true })
         await api.put(`/usuarios/${id}`, {
             novaIdentidade: (state.identidade != id ? state.identidade : ''),
-            email: state.mail,
+            email: state.mail | '',
             senha: state.senha,
             sobrenome: state.sobrenome,
+            display: state.display,
             nome: state.nome
         })
             .then((response) => {
@@ -46,6 +48,8 @@ export const UsuarioDetalhes: React.FC = () => {
             }).catch(({ response }) => {
                 alert(response.data.message)
                 console.log(JSON.stringify(response))
+                setStatus({ ...status, loading: false })
+
             });
     }
 
@@ -57,6 +61,7 @@ export const UsuarioDetalhes: React.FC = () => {
                     identidade: id,
                     nome: usuario.givenName,
                     sobrenome: usuario.sn,
+                    display: usuario.displayName,
                     mail: usuario.mail,
                     senha: '',
                     valid: true
@@ -126,17 +131,27 @@ export const UsuarioDetalhes: React.FC = () => {
                         value={state.sobrenome}
                         onChange={(e) => setState({ ...state, sobrenome: e.target.value })}
                     />
-                    <TextField id="outlined-basic"
-                        label="Senha"
-                        variant="outlined"
-                        className='half'
-                        autoFocus={true}
-                        placeholder='Senha'
-                        type='text'
-                        value={state.senha}
-                        onChange={(e) => setState({ ...state, senha: e.target.value })}
-                    />
                 </div>
+                <TextField id="outlined-basic"
+                    label="Nome De Guerra"
+                    variant="outlined"
+                    className='half'
+                    autoFocus={true}
+                    placeholder='Nome de Guerra'
+                    type='text'
+                    value={state.display}
+                    onChange={(e) => setState({ ...state, display: e.target.value })}
+                />
+                <TextField id="outlined-basic"
+                    label="Senha"
+                    variant="outlined"
+                    className='half'
+                    autoFocus={true}
+                    placeholder='Senha'
+                    type='text'
+                    value={state.senha}
+                    onChange={(e) => setState({ ...state, senha: e.target.value })}
+                />
                 {status.loading ?
                     <LoadingButton
                         loading

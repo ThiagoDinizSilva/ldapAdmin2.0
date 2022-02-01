@@ -8,8 +8,7 @@ export class UsuarioAtualizado {
     @Allow()
     novaIdentidade: string;
 
-    @ValidateIf(x => x.email)
-    @IsString()
+    @Allow()
     email: string;
 
     @ValidateIf(x => x.senha)
